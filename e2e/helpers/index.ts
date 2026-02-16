@@ -23,7 +23,7 @@ export const fillDatePicker = async (page: Page, name: string, value: string) =>
   await date.pressSequentially(value, { delay: 100 });
   // Wait for React Aria to finish processing all segments before returning
   // Normalize the value to handle React Aria removing leading zeros (06/15/1985 -> 6/15/1985)
-  const normalizedValue = value.replace(/\b0(\d)/g, '$1');
+  const normalizedValue = value.replace(/\b0(\d)/gu, '$1');
   await expect(group).toContainText(normalizedValue);
 };
 
