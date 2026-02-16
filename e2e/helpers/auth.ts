@@ -1,4 +1,5 @@
-import { expect, type Page } from "@playwright/test";
+import type { Page, Response } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { users } from "@/db/schema";
 
 // Backend accepts "000000" when Rails.env.test? && ENV['ENABLE_DEFAULT_OTP'] == 'true'
@@ -18,9 +19,8 @@ export const login = async (page: Page, user: typeof users.$inferSelect, redirec
   await page.getByLabel("Work email").fill(user.email);
 
   // Wait for the send OTP request to complete successfully before filling OTP
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sendOtpPromise = page.waitForResponse(
-    (response: any) => response.url().includes("/internal/email_otp") && response.status() === 200,
+    (response: Response) => response.url().includes("/internal/email_otp") && response.status() === 200,
   );
 
   await page.getByRole("button", { name: "Log in", exact: true }).click();
