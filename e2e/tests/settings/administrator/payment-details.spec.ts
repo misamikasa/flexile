@@ -39,7 +39,10 @@ test.describe("Company administrator settings - payment details", () => {
 
     await withinModal(
       async () => {
-        await stripePaymentFrame.getByLabel("Test Institution").click();
+        // Stripe's test mode UI shows either "Test Institution" or "Test (Non-OAuth)" intermittently
+        const testInstitution = stripePaymentFrame.getByLabel("Test Institution");
+        const testNonOAuth = stripePaymentFrame.getByLabel("Test (Non-OAuth)");
+        await testInstitution.or(testNonOAuth).click();
         await stripeBankFrame.getByTestId("agree-button").click();
         await stripeBankFrame.getByTestId("success").click();
         await stripeBankFrame.getByTestId("select-button").click();
@@ -62,7 +65,10 @@ test.describe("Company administrator settings - payment details", () => {
     await page.getByRole("button", { name: "Edit" }).click();
     await withinModal(
       async () => {
-        await stripePaymentFrame.getByLabel("Test Institution").click();
+        // Stripe's test mode UI shows either "Test Institution" or "Test (Non-OAuth)" intermittently
+        const testInstitution = stripePaymentFrame.getByLabel("Test Institution");
+        const testNonOAuth = stripePaymentFrame.getByLabel("Test (Non-OAuth)");
+        await testInstitution.or(testNonOAuth).click();
         await stripeBankFrame.getByTestId("agree-button").click();
         await stripeBankFrame.getByTestId("high balance").click();
         await stripeBankFrame.getByTestId("select-button").click();
