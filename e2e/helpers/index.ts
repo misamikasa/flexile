@@ -22,7 +22,9 @@ export const fillDatePicker = async (page: Page, name: string, value: string) =>
   // Add delay between keystrokes as workaround for React Aria Components JS interop issues
   await date.pressSequentially(value, { delay: 100 });
   // Wait for React Aria to finish processing all segments before returning
-  await expect(group).toContainText(value);
+  // Normalize the value to handle React Aria removing leading zeros (06/15/1985 -> 6/15/1985)
+  const normalizedValue = value.replace(/\b0(\d)/g, '$1');
+  await expect(group).toContainText(normalizedValue);
 };
 
 export const findRichTextEditor = (page: Locator | Page, name: string) =>
